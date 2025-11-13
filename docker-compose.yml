@@ -1,0 +1,22 @@
+services:
+  aldra-db:
+    container_name: aldra-db
+    image: postgres:18
+    environment:
+      POSTGRES_USER: ${ALDRA_DB_USER}
+      POSTGRES_PASSWORD: ${ALDRA_DB_PASSWORD}
+      POSTGRES_DB: ${ALDRA_DB_NAME}
+      TZ: 'Asia/Tokyo'
+    ports:
+      - "${ALDRA_DB_PORT}:5432"
+    volumes:
+      - aldra-db-data:/var/lib/postgresql
+
+volumes:
+  aldra-db-data:
+    name: aldra-db-data
+    driver: local
+
+networks:
+  default:
+    name: aldra

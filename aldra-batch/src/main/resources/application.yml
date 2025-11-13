@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: local
+
+app:
+  batch:
+    execute: ${EXECUTION_JOB:Sample}
+
+logging:
+  level:
+    root: warn
+    com.s_kugel.aldra.batch: info

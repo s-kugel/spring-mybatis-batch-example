@@ -1,0 +1,34 @@
+[versions]
+lombok = "1.18.42"
+ulid = "8.3.0"
+spring-boot = "3.5.7"
+spring-dependency-management = "1.1.7"
+spotless = "8.0.0"
+mybatis-spring = "3.0.4"
+mybatis-generator = "1.4.2"
+postgresql = "42.7.8"
+junit = "6.0.0"
+database-rider = "1.44.0"
+freemarker = "2.3.34"
+
+[libraries]
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+ulid = { module = "de.huxhorn.sulky:de.huxhorn.sulky.ulid", version.ref = "ulid" }
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
+mybatis-spring = { module = "org.mybatis.spring.boot:mybatis-spring-boot-starter", version.ref = "mybatis-spring" }
+mybatis-generator-core = { module = "org.mybatis.generator:mybatis-generator-core", version.ref = "mybatis-generator" }
+postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }
+database-rider-core = { module = "com.github.database-rider:rider-core", version.ref = "database-rider" }
+database-rider-spring = { module = "com.github.database-rider:rider-spring", version.ref = "database-rider" }
+database-rider-junit5 = { module = "com.github.database-rider:rider-junit5", version.ref = "database-rider" }
+freemarker = { module = "org.freemarker:freemarker", version.ref = "freemarker" }
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+
+[bundles]
