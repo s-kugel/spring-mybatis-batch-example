@@ -1,16 +1,21 @@
 package com.s_kugel.aldra.batch.task;
 
-import com.s_kugel.aldra.batch.enums.ExitStatus;
+import com.s_kugel.aldra.batch.model.BatchContext;
+import com.s_kugel.aldra.batch.model.BatchResult;
+import com.s_kugel.aldra.database.repository.BatchLogMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class SampleTask implements BatchTask {
+public class SampleTask extends BusinessDateTask {
+
+  public SampleTask(BatchLogMapper batchLogMapper) {
+    super(batchLogMapper);
+  }
 
   @Override
-  public ExitStatus execute() {
-    log.info("foo - bar");
-    return ExitStatus.FAILED;
+  public BatchResult execute(BatchContext context) {
+    return BatchResult.success("sandbox");
   }
 }

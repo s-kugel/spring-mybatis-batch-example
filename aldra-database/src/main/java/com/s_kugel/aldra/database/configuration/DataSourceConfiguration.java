@@ -78,6 +78,7 @@ public class DataSourceConfiguration {
     var bean = new SqlSessionFactoryBean();
     bean.setDataSource(dataSource);
     bean.setMapperLocations(RESOLVER.getResources(props.getMapperLocations()));
+    bean.setTypeHandlersPackage(props.getTypeHandlersPackage());
     bean.setConfiguration(props.getConfiguration());
     return bean.getObject();
   }

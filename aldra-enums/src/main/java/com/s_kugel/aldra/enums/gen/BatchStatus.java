@@ -9,36 +9,42 @@ import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
 /**
- * バッチ終了ステータス
- *
- * @author enum-generator
+ * バッチステータス
  */
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public enum BatchExitStatus {
+public enum BatchStatus {
 
-  /** 実行中 */
+  /**
+   * 実行中
+   */
   RUNNING("実行中", 1),
 
-  /** 警告終了 */
+  /**
+   * 警告終了
+   */
   WARN("警告終了", 2),
 
-  /** 正常終了 */
+  /**
+   * 正常終了
+   */
   SUCCESS("正常終了", 3),
 
-  /** 異常終了 */
+  /**
+   * 異常終了
+   */
   FAIL("異常終了", 4);
 
   final String label;
 
   final Integer order;
 
-  public static Optional<BatchExitStatus> fromCode(String code) {
+  public static Optional<BatchStatus> fromCode(String code) {
     return Arrays.stream(values()).filter(v -> Objects.equals(v.name(), code)).findFirst();
   }
 
-  public static Optional<BatchExitStatus> fromLabel(String label) {
+  public static Optional<BatchStatus> fromLabel(String label) {
     return Arrays.stream(values()).filter(v -> Objects.equals(v.label, label)).findFirst();
   }
 }

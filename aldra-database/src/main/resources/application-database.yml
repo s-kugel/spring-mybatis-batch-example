@@ -17,6 +17,7 @@ spring:
 
 mybatis:
   mapper-locations: classpath:/mapper/**/*.xml
+  type-handlers-package: com.s_kugel.aldra.database.type_handler
   configuration:
     map-underscore-to-camel-case: true
     default-fetch-size: 10000

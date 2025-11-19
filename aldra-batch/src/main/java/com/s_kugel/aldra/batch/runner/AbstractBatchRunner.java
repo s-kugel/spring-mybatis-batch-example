@@ -1,6 +1,7 @@
 package com.s_kugel.aldra.batch.runner;
 
-import com.s_kugel.aldra.batch.enums.ExitStatus;
+import com.s_kugel.aldra.batch.model.BatchContext;
+import com.s_kugel.aldra.batch.model.BatchResult;
 import com.s_kugel.aldra.batch.task.BatchTask;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -13,7 +14,7 @@ public abstract class AbstractBatchRunner implements ApplicationRunner, ExitCode
 
   static final String PROPERTY_NAME = "app.batch.execute";
 
-  private ExitStatus exitStatus;
+  private BatchResult batchResult;
 
   protected abstract String getBatchId();
 
@@ -25,7 +26,12 @@ public abstract class AbstractBatchRunner implements ApplicationRunner, ExitCode
 
   @Override
   public int getExitCode() {
-    return exitStatus.getExitCode();
+    return switch (batchResult.status()) {
+      case RUNNING -> 3;
+      case WARN -> 5;
+      case FAIL -> 9;
+      case SUCCESS -> 0;
+    };
   }
 
   @Override
@@ -34,8 +40,17 @@ public abstract class AbstractBatchRunner implements ApplicationRunner, ExitCode
     sw.start();
     log.info("[{}][{}]{}を開始します。", getBatchId(), getBatchName(), getBatchNameJP());
 
-    var status = getTask().execute();
-    this.exitStatus = status;
+    var context =
+        BatchContext.builder()
+            .batchId(getBatchId())
+            .batchName(getBatchName())
+            .batchNameJP(getBatchNameJP())
+            .build();
+    var task = getTask();
+    var batchLogId = task.startLog(context);
+    var batchResult = task.execute(context);
+    task.endLog(batchLogId, batchResult, context);
+    this.batchResult = batchResult;
 
     sw.stop();
     log.info(
@@ -43,7 +58,7 @@ public abstract class AbstractBatchRunner implements ApplicationRunner, ExitCode
         getBatchId(),
         getBatchName(),
         getBatchNameJP(),
-        status.getDescription(),
+        batchResult.status().getLabel(),
         sw.getTotalTimeMillis());
   }
 }

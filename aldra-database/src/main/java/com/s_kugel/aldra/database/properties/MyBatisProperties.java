@@ -11,5 +11,7 @@ public class MyBatisProperties {
 
   String mapperLocations;
 
+  String typeHandlersPackage;
+
   Configuration configuration;
 }

@@ -33,7 +33,7 @@ spotless {
         forbidWildcardImports()
         formatAnnotations()
         endWithNewline()
-        googleJavaFormat()
+        googleJavaFormat().skipJavadocFormatting()
     }
 }
 
@@ -47,10 +47,6 @@ tasks.register<Delete>("cleanGeneratedCodes") {
 tasks.named<BootRun>("bootRun") {
     dependsOn("cleanGeneratedCodes")
     args = listOf(
-        // "--driverClassName=org.postgresql.Driver",
-        // "--url=jdbc:postgresql://${System.getenv("ALDRA_DB_HOST") ?: "127.0.0.1"}:${System.getenv("ALDRA_DB_PORT") ?: "15432"}/${System.getenv("ALDRA_DB_NAME") ?://  "aldra_db"}",
-        // "--username=${System.getenv("ALDRA_DB_USER") ?: "aldra"}",
-        // "--password=${System.getenv("ALDRA_DB_PASSWORD") ?: "aldra"}",
         "--outputDirectory=${project(":aldra-database").projectDir.resolve("src/main/java")}",
         "--targetEntityPackage=com.s_kugel.aldra.database.entity.gen",
         "--targetMapperPackage=com.s_kugel.aldra.database.repository.gen"

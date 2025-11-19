@@ -11,7 +11,7 @@ dependencies {
     testImplementation(libs.lombok)
     testAnnotationProcessor(libs.lombok)
 
-    implementation(libs.ulid)
+    implementation(libs.uuid)
     implementation(libs.postgresql)
     implementation(libs.mybatis.spring)
 
@@ -38,7 +38,7 @@ spotless {
         forbidWildcardImports()
         formatAnnotations()
         endWithNewline()
-        googleJavaFormat()
+        googleJavaFormat().skipJavadocFormatting()
     }
 }
 

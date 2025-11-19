@@ -1,5 +1,10 @@
 package com.s_kugel.aldra.database.repositoty;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import com.fasterxml.uuid.Generators;
+import com.fasterxml.uuid.impl.TimeBasedEpochGenerator;
 import com.github.database.rider.core.api.configuration.DBUnit;
 import com.github.database.rider.core.api.configuration.Orthography;
 import com.github.database.rider.core.api.dataset.DataSet;
@@ -7,9 +12,9 @@ import com.github.database.rider.junit5.api.DBRider;
 import com.s_kugel.aldra.database.TestConfiguration;
 import com.s_kugel.aldra.database.entity.gen.BatchLog;
 import com.s_kugel.aldra.database.repository.BatchLogMapper;
-import de.huxhorn.sulky.ulid.ULID;
-import java.sql.JDBCType;
+import com.s_kugel.aldra.enums.gen.BatchStatus;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -35,38 +40,31 @@ public class BulkInsertMapperTest {
   @Autowired //
   private BatchLogMapper batchLogMapper;
 
-  private final ULID ulid = new ULID();
+  private final TimeBasedEpochGenerator generator = Generators.timeBasedEpochGenerator();
 
   @Test
   @DisplayName("バッチログテーブルのバルクインサートが正しく行えること")
-  @DataSet(value = "/datasets/BulkInsertMapperTest/seed/batch_log.csv")
+  @DataSet(value = "/datasets/BulkInsertMapperTest/batch_log/seed/batch_log.csv")
   void test_batch_log() {
-    var result =
-        batchLogMapper.bulkInsert(
-            List.of(
-                new BatchLog()
-                    .withId(ulid.nextULID())
-                    .withBatchId("BAT00001")
-                    .withBatchName("SampleBatch - A")
-                    .withBatchNameJp("サンプルバッチ - A")
-                    .withExitDatetime(LocalDateTime.now())
-                    .withExitMessage("message")
-                    .withStatus(JDBCType.DATE)
-                    .withCreatedAt(LocalDateTime.now())
-                    .withCreatedBy("UT")
-                    .withVersion(0),
-                new BatchLog()
-                    .withId(ulid.nextULID())
-                    .withBatchId("BAT00002")
-                    .withBatchName("SampleBatch - B")
-                    .withBatchNameJp("サンプルバッチ - B")
-                    .withExitDatetime(LocalDateTime.now())
-                    .withExitMessage("hoge")
-                    .withStatus(JDBCType.VARCHAR)
-                    .withCreatedAt(LocalDateTime.now())
-                    .withCreatedBy("UT")
-                    .withVersion(0)));
+    List<BatchLog> rows = new ArrayList<>();
+    for (var i = 0; i < 100; i++) {
+      var row =
+          new BatchLog()
+              .withId(generator.generate())
+              .withBatchId("BAT%05d".formatted(i))
+              .withBatchName("SampleBatch%05d".formatted(i))
+              .withBatchNameJp("サンプルバッチ%05d".formatted(i))
+              .withExitMessage("終了メッセージ%05d".formatted(i))
+              .withExitDatetime(LocalDateTime.now())
+              .withStatus(BatchStatus.values()[i % BatchStatus.values().length])
+              .withCreatedAt(LocalDateTime.now())
+              .withCreatedBy("UT")
+              .withVersion(0);
+      rows.add(row);
+    }
 
-    log.info("result: rows={}", result);
+    var result = batchLogMapper.bulkInsert(rows);
+
+    assertAll(() -> assertEquals(100, result));
   }
 }

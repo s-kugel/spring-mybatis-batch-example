@@ -1,6 +1,9 @@
 spring:
   profiles:
     active: local
+  config:
+    import:
+      - classpath:application-database.yml
 
 app:
   batch:

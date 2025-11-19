@@ -4,8 +4,13 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.s_kugel.aldra.batch", "com.s_kugel.aldra.database"})
+@ConfigurationPropertiesScan(
+    basePackages = {"com.s_kugel.aldra.batch", "com.s_kugel.aldra.database"})
+// @ImportAutoConfiguration
+// @Import({DataSourceConfiguration.class})
 public class Application {
 
   public static void main(String[] args) {

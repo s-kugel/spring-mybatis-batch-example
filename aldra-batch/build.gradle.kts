@@ -11,7 +11,13 @@ dependencies {
     testImplementation(libs.lombok)
     testAnnotationProcessor(libs.lombok)
 
+    implementation(libs.uuid)
+    implementation(libs.mybatis.spring)
+
     implementation(libs.spring.boot.starter)
+    implementation(project(":aldra-enums"))
+    implementation(project(":aldra-database"))
+
     testImplementation(libs.spring.boot.starter.test)
 }
 
@@ -28,6 +34,6 @@ spotless {
         forbidWildcardImports()
         formatAnnotations()
         endWithNewline()
-        googleJavaFormat()
+        googleJavaFormat().skipJavadocFormatting()
     }
 }

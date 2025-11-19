@@ -1,6 +1,6 @@
 [versions]
 lombok = "1.18.42"
-ulid = "8.3.0"
+uuid = "5.1.1"
 spring-boot = "3.5.7"
 spring-dependency-management = "1.1.7"
 spotless = "8.0.0"
@@ -10,10 +10,11 @@ postgresql = "42.7.8"
 junit = "6.0.0"
 database-rider = "1.44.0"
 freemarker = "2.3.34"
+flyway = "11.17.0"
 
 [libraries]
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
-ulid = { module = "de.huxhorn.sulky:de.huxhorn.sulky.ulid", version.ref = "ulid" }
+uuid = { module = "com.fasterxml.uuid:java-uuid-generator", version.ref = "uuid" }
 spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
 mybatis-spring = { module = "org.mybatis.spring.boot:mybatis-spring-boot-starter", version.ref = "mybatis-spring" }
@@ -25,10 +26,12 @@ database-rider-core = { module = "com.github.database-rider:rider-core", version
 database-rider-spring = { module = "com.github.database-rider:rider-spring", version.ref = "database-rider" }
 database-rider-junit5 = { module = "com.github.database-rider:rider-junit5", version.ref = "database-rider" }
 freemarker = { module = "org.freemarker:freemarker", version.ref = "freemarker" }
+flyway-database-postgresql = { module = "org.flywaydb:flyway-database-postgresql", version.ref = "flyway" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }
 
 [bundles]

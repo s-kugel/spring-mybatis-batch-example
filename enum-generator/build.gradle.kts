@@ -34,7 +34,7 @@ spotless {
         forbidWildcardImports()
         formatAnnotations()
         endWithNewline()
-        googleJavaFormat()
+        googleJavaFormat().skipJavadocFormatting()
     }
 }
 

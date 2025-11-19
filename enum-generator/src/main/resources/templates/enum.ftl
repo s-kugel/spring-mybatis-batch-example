@@ -10,8 +10,6 @@ import lombok.experimental.FieldDefaults;
 
 /**
  * ${domainName}
- *
- * @author enum-generator
  */
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
