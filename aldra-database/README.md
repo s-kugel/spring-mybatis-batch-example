@@ -1,1 +1,3 @@
-# database
+# aldra-database
+
+データベースに関するEntityクラスやMapperインターフェースを扱うプロジェクト
