@@ -34,6 +34,10 @@ public class BusinessCalendarSqlProviderDefault {
       sql.VALUES("end_of_month", "#{endOfMonth,jdbcType=DATE}");
     }
 
+    if (row.getBusinessDateFlag() != null) {
+      sql.VALUES("business_date_flag", "#{businessDateFlag,jdbcType=BIT}");
+    }
+
     if (row.getCreatedAt() != null) {
       sql.VALUES("created_at", "#{createdAt,jdbcType=TIMESTAMP}");
     }
@@ -81,6 +85,10 @@ public class BusinessCalendarSqlProviderDefault {
 
     if (row.getEndOfMonth() != null) {
       sql.SET("end_of_month = #{endOfMonth,jdbcType=DATE}");
+    }
+
+    if (row.getBusinessDateFlag() != null) {
+      sql.SET("business_date_flag = #{businessDateFlag,jdbcType=BIT}");
     }
 
     if (row.getCreatedAt() != null) {

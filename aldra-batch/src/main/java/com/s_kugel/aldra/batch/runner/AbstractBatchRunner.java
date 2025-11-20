@@ -47,18 +47,25 @@ public abstract class AbstractBatchRunner implements ApplicationRunner, ExitCode
             .batchNameJP(getBatchNameJP())
             .build();
     var task = getTask();
-    var batchLogId = task.startLog(context);
-    var batchResult = task.execute(context);
-    task.endLog(batchLogId, batchResult, context);
-    this.batchResult = batchResult;
+
+    try {
+      var batchLogId = task.startLog(context);
+      var batchResult = task.execute(context);
+      task.endLog(batchLogId, batchResult, context);
+      this.batchResult = batchResult;
+    } catch (Exception e) {
+      log.error("{}の処理で想定外のエラーが発生しました。", getBatchNameJP(), e);
+      this.batchResult = BatchResult.fail(e.getMessage());
+    }
 
     sw.stop();
     log.info(
-        "[{}][{}]{}が{}しました。処理時間={}ms",
+        "[{}][{}]{}が{}しました。処理時間={}ms / 終了メッセージ={}",
         getBatchId(),
         getBatchName(),
         getBatchNameJP(),
         batchResult.status().getLabel(),
-        sw.getTotalTimeMillis());
+        sw.getTotalTimeMillis(),
+        batchResult.message());
   }
 }

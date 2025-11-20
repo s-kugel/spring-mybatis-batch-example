@@ -33,14 +33,16 @@ public interface BusinessCalendarMapperDefault {
   @Insert({
     "insert into business_calendar (basis_date, previous_basis_date, ",
     "next_basis_date, start_of_month, ",
-    "end_of_month, created_at, ",
-    "created_by, updated_at, ",
-    "updated_by, version)",
+    "end_of_month, business_date_flag, ",
+    "created_at, created_by, ",
+    "updated_at, updated_by, ",
+    "version)",
     "values (#{basisDate,jdbcType=DATE}, #{previousBasisDate,jdbcType=DATE}, ",
     "#{nextBasisDate,jdbcType=DATE}, #{startOfMonth,jdbcType=DATE}, ",
-    "#{endOfMonth,jdbcType=DATE}, #{createdAt,jdbcType=TIMESTAMP}, ",
-    "#{createdBy,jdbcType=VARCHAR}, #{updatedAt,jdbcType=TIMESTAMP}, ",
-    "#{updatedBy,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER})"
+    "#{endOfMonth,jdbcType=DATE}, #{businessDateFlag,jdbcType=BIT}, ",
+    "#{createdAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, ",
+    "#{updatedAt,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, ",
+    "#{version,jdbcType=INTEGER})"
   })
   int insert(BusinessCalendar row);
 
@@ -62,7 +64,7 @@ public interface BusinessCalendarMapperDefault {
   @Select({
     "select",
     "basis_date, previous_basis_date, next_basis_date, start_of_month, end_of_month, ",
-    "created_at, created_by, updated_at, updated_by, version",
+    "business_date_flag, created_at, created_by, updated_at, updated_by, version",
     "from business_calendar",
     "where basis_date = #{basisDate,jdbcType=DATE}"
   })
@@ -75,6 +77,7 @@ public interface BusinessCalendarMapperDefault {
     @Result(column = "next_basis_date", property = "nextBasisDate", jdbcType = JdbcType.DATE),
     @Result(column = "start_of_month", property = "startOfMonth", jdbcType = JdbcType.DATE),
     @Result(column = "end_of_month", property = "endOfMonth", jdbcType = JdbcType.DATE),
+    @Result(column = "business_date_flag", property = "businessDateFlag", jdbcType = JdbcType.BIT),
     @Result(column = "created_at", property = "createdAt", jdbcType = JdbcType.TIMESTAMP),
     @Result(column = "created_by", property = "createdBy", jdbcType = JdbcType.VARCHAR),
     @Result(column = "updated_at", property = "updatedAt", jdbcType = JdbcType.TIMESTAMP),
@@ -106,6 +109,7 @@ public interface BusinessCalendarMapperDefault {
     "next_basis_date = #{nextBasisDate,jdbcType=DATE},",
     "start_of_month = #{startOfMonth,jdbcType=DATE},",
     "end_of_month = #{endOfMonth,jdbcType=DATE},",
+    "business_date_flag = #{businessDateFlag,jdbcType=BIT},",
     "created_at = #{createdAt,jdbcType=TIMESTAMP},",
     "created_by = #{createdBy,jdbcType=VARCHAR},",
     "updated_at = #{updatedAt,jdbcType=TIMESTAMP},",

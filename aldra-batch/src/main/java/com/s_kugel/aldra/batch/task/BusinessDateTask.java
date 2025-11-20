@@ -6,8 +6,10 @@ import com.s_kugel.aldra.batch.model.BatchContext;
 import com.s_kugel.aldra.batch.model.BatchResult;
 import com.s_kugel.aldra.database.entity.gen.BatchLog;
 import com.s_kugel.aldra.database.repository.BatchLogMapper;
+import com.s_kugel.aldra.database.repository.BusinessCalendarMapper;
 import com.s_kugel.aldra.enums.gen.BatchStatus;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +21,11 @@ public abstract class BusinessDateTask implements BatchTask {
 
   private final BatchLogMapper batchLogMapper;
 
+  private final BusinessCalendarMapper businessCalendarMapper;
+
   private final TimeBasedEpochGenerator generator = Generators.timeBasedEpochGenerator();
+
+  protected abstract BatchResult process(BatchContext batchContext);
 
   @Transactional
   @Override
@@ -41,8 +47,22 @@ public abstract class BusinessDateTask implements BatchTask {
   @Override
   public BatchResult execute(BatchContext context) {
     try {
-      Thread.sleep(5000);
-      return BatchResult.success();
+      var businessCalendar = businessCalendarMapper.findCurrentBusinessDate();
+      if (Objects.isNull(businessCalendar)) {
+        return BatchResult.fail("有効な基準日が設定されていません");
+      }
+      if (!businessCalendar.getBusinessDateFlag()) {
+        return BatchResult.success("非営業日のためスキップします");
+      }
+
+      return process(
+          context.toBuilder()
+              .basisDate(businessCalendar.getBasisDate())
+              .previousBasisDate(businessCalendar.getPreviousBasisDate())
+              .nextBasisDate(businessCalendar.getNextBasisDate())
+              .startOfMonth(businessCalendar.getStartOfMonth())
+              .endOfMonth(businessCalendar.getEndOfMonth())
+              .build());
     } catch (Exception e) {
       log.error("{}の処理に失敗しました", this.getClass().getSimpleName(), e);
       return BatchResult.fail(e.getMessage());
