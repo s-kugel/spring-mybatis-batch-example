@@ -14,6 +14,7 @@ CREATE TABLE batch_log
     batch_name    VARCHAR(50) NOT NULL,
     batch_name_jp VARCHAR(50) NOT NULL,
     status        VARCHAR(10) NOT NULL,
+    basis_date    DATE,
     exit_datetime TIMESTAMP,
     exit_message  TEXT,
     created_at    TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -30,6 +31,7 @@ COMMENT ON COLUMN batch_log.batch_id IS 'バッチID';
 COMMENT ON COLUMN batch_log.batch_name IS 'バッチ名（物理）';
 COMMENT ON COLUMN batch_log.batch_name_jp IS 'バッチ名（論理）';
 COMMENT ON COLUMN batch_log.status IS 'バッチステータス';
+COMMENT ON COLUMN batch_log.basis_date IS '基準日';
 COMMENT ON COLUMN batch_log.exit_datetime IS '終了日時';
 COMMENT ON COLUMN batch_log.exit_message IS '終了メッセージ';
 COMMENT ON COLUMN batch_log.created_at IS '作成日時';

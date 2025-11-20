@@ -34,6 +34,10 @@ public class BatchLogSqlProviderDefault {
       sql.VALUES("status", "#{status,jdbcType=VARCHAR}");
     }
 
+    if (row.getBasisDate() != null) {
+      sql.VALUES("basis_date", "#{basisDate,jdbcType=DATE}");
+    }
+
     if (row.getExitDatetime() != null) {
       sql.VALUES("exit_datetime", "#{exitDatetime,jdbcType=TIMESTAMP}");
     }
@@ -89,6 +93,10 @@ public class BatchLogSqlProviderDefault {
 
     if (row.getStatus() != null) {
       sql.SET("status = #{status,jdbcType=VARCHAR}");
+    }
+
+    if (row.getBasisDate() != null) {
+      sql.SET("basis_date = #{basisDate,jdbcType=DATE}");
     }
 
     if (row.getExitDatetime() != null) {

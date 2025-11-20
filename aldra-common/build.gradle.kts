@@ -1,7 +1,7 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+
 plugins {
-    application
-    alias(libs.plugins.spring.boot)
-    alias(libs.plugins.spring.dependency.management)
+    `java-library`
     alias(libs.plugins.spotless)
 }
 
@@ -11,14 +11,10 @@ dependencies {
     testImplementation(libs.lombok)
     testAnnotationProcessor(libs.lombok)
 
-    implementation(libs.uuid)
-    implementation(libs.mybatis.spring)
-
-    implementation(libs.spring.boot.starter)
     implementation(project(":aldra-enums"))
-    implementation(project(":aldra-common"))
-    implementation(project(":aldra-database"))
 
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.platform.launcher)
     testImplementation(libs.spring.boot.starter.test)
 }
 
@@ -36,5 +32,18 @@ spotless {
         formatAnnotations()
         endWithNewline()
         googleJavaFormat().skipJavadocFormatting()
+    }
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    testLogging {
+        events(
+            "SKIPPED",
+            "PASSED",
+            "FAILED",
+            "STANDARD_ERROR",
+        )
+        exceptionFormat = TestExceptionFormat.FULL
     }
 }

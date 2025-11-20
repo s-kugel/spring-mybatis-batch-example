@@ -27,6 +27,12 @@ public abstract class BusinessDateTask implements BatchTask {
 
   protected abstract BatchResult process(BatchContext batchContext);
 
+  @Override
+  public boolean hasRunningSameTask(BatchContext context) {
+    var count = batchLogMapper.countRunningTask(context.batchId(), BatchStatus.RUNNING);
+    return count > 0;
+  }
+
   @Transactional
   @Override
   public UUID startLog(BatchContext context) {

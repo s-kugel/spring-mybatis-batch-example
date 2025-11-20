@@ -6,6 +6,8 @@ import java.util.UUID;
 
 public interface BatchTask {
 
+  boolean hasRunningSameTask(BatchContext context);
+
   UUID startLog(BatchContext context);
 
   BatchResult execute(BatchContext context);

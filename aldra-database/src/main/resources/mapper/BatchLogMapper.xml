@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.s_kugel.aldra.database.repository.BatchLogMapper">
+    <select
+        id="countRunningTask"
+        resultType="java.lang.Integer"
+    >
+        SELECT COUNT(*)
+        FROM batch_log AS bl
+        JOIN application_date AS ad
+          ON bl.basis_date = ad.basis_date
+        WHERE bl.batch_id = #{batchId}
+          AND bl.status = #{status}
+    </select>
+
     <update id="updateBatchEndLog">
         UPDATE batch_log
         SET status = #{status},
+            basis_date = (SELECT basis_date FROM application_date LIMIT 1),
             exit_datetime = CURRENT_TIMESTAMP,
             exit_message = #{exitMessage},
             updated_at = CURRENT_TIMESTAMP,

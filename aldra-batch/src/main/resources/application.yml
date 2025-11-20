@@ -3,6 +3,7 @@ spring:
     active: local
   config:
     import:
+      - classpath:application-common.yml
       - classpath:application-database.yml
 
 app:

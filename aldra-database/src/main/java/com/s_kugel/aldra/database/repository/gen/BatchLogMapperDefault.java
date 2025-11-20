@@ -33,16 +33,18 @@ public interface BatchLogMapperDefault {
   @Insert({
     "insert into batch_log (id, batch_id, ",
     "batch_name, batch_name_jp, ",
-    "status, exit_datetime, ",
-    "exit_message, created_at, ",
-    "created_by, updated_at, ",
-    "updated_by, version)",
+    "status, basis_date, ",
+    "exit_datetime, exit_message, ",
+    "created_at, created_by, ",
+    "updated_at, updated_by, ",
+    "version)",
     "values (#{id,jdbcType=OTHER}, #{batchId,jdbcType=VARCHAR}, ",
     "#{batchName,jdbcType=VARCHAR}, #{batchNameJp,jdbcType=VARCHAR}, ",
-    "#{status,jdbcType=VARCHAR}, #{exitDatetime,jdbcType=TIMESTAMP}, ",
-    "#{exitMessage,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, ",
-    "#{createdBy,jdbcType=VARCHAR}, #{updatedAt,jdbcType=TIMESTAMP}, ",
-    "#{updatedBy,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER})"
+    "#{status,jdbcType=VARCHAR}, #{basisDate,jdbcType=DATE}, ",
+    "#{exitDatetime,jdbcType=TIMESTAMP}, #{exitMessage,jdbcType=VARCHAR}, ",
+    "#{createdAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, ",
+    "#{updatedAt,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, ",
+    "#{version,jdbcType=INTEGER})"
   })
   int insert(BatchLog row);
 
@@ -63,8 +65,8 @@ public interface BatchLogMapperDefault {
    */
   @Select({
     "select",
-    "id, batch_id, batch_name, batch_name_jp, status, exit_datetime, exit_message, ",
-    "created_at, created_by, updated_at, updated_by, version",
+    "id, batch_id, batch_name, batch_name_jp, status, basis_date, exit_datetime, ",
+    "exit_message, created_at, created_by, updated_at, updated_by, version",
     "from batch_log",
     "where id = #{id,jdbcType=OTHER}"
   })
@@ -74,6 +76,7 @@ public interface BatchLogMapperDefault {
     @Result(column = "batch_name", property = "batchName", jdbcType = JdbcType.VARCHAR),
     @Result(column = "batch_name_jp", property = "batchNameJp", jdbcType = JdbcType.VARCHAR),
     @Result(column = "status", property = "status", jdbcType = JdbcType.VARCHAR),
+    @Result(column = "basis_date", property = "basisDate", jdbcType = JdbcType.DATE),
     @Result(column = "exit_datetime", property = "exitDatetime", jdbcType = JdbcType.TIMESTAMP),
     @Result(column = "exit_message", property = "exitMessage", jdbcType = JdbcType.VARCHAR),
     @Result(column = "created_at", property = "createdAt", jdbcType = JdbcType.TIMESTAMP),
@@ -105,6 +108,7 @@ public interface BatchLogMapperDefault {
     "batch_name = #{batchName,jdbcType=VARCHAR},",
     "batch_name_jp = #{batchNameJp,jdbcType=VARCHAR},",
     "status = #{status,jdbcType=VARCHAR},",
+    "basis_date = #{basisDate,jdbcType=DATE},",
     "exit_datetime = #{exitDatetime,jdbcType=TIMESTAMP},",
     "exit_message = #{exitMessage,jdbcType=VARCHAR},",
     "created_at = #{createdAt,jdbcType=TIMESTAMP},",
