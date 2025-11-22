@@ -1,6 +1,7 @@
 package com.s_kugel.aldra.database.repository.gen;
 
 import com.s_kugel.aldra.database.entity.gen.BatchLog;
+import java.util.List;
 import java.util.UUID;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -119,4 +120,22 @@ public interface BatchLogMapperDefault {
     "where id = #{id,jdbcType=OTHER}"
   })
   int updateByPrimaryKey(BatchLog row);
+
+  @Select("SELECT * FROM batch_log")
+  @Results({
+    @Result(column = "id", property = "id", jdbcType = JdbcType.OTHER),
+    @Result(column = "batch_id", property = "batchId", jdbcType = JdbcType.VARCHAR),
+    @Result(column = "batch_name", property = "batchName", jdbcType = JdbcType.VARCHAR),
+    @Result(column = "batch_name_jp", property = "batchNameJp", jdbcType = JdbcType.VARCHAR),
+    @Result(column = "status", property = "status", jdbcType = JdbcType.VARCHAR),
+    @Result(column = "basis_date", property = "basisDate", jdbcType = JdbcType.DATE),
+    @Result(column = "exit_datetime", property = "exitDatetime", jdbcType = JdbcType.TIMESTAMP),
+    @Result(column = "exit_message", property = "exitMessage", jdbcType = JdbcType.VARCHAR),
+    @Result(column = "created_at", property = "createdAt", jdbcType = JdbcType.TIMESTAMP),
+    @Result(column = "created_by", property = "createdBy", jdbcType = JdbcType.VARCHAR),
+    @Result(column = "updated_at", property = "updatedAt", jdbcType = JdbcType.TIMESTAMP),
+    @Result(column = "updated_by", property = "updatedBy", jdbcType = JdbcType.VARCHAR),
+    @Result(column = "version", property = "version", jdbcType = JdbcType.INTEGER)
+  })
+  List<BatchLog> selectAll();
 }

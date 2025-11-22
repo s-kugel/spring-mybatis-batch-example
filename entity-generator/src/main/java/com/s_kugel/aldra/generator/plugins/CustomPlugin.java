@@ -7,6 +7,7 @@ import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
+import org.mybatis.generator.api.dom.java.Interface;
 import org.mybatis.generator.api.dom.java.JavaVisibility;
 import org.mybatis.generator.api.dom.java.Method;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
@@ -72,6 +73,35 @@ public class CustomPlugin extends PluginAdapter {
                                 .formatted(v.getJavaProperty(), v.getJdbcTypeName()))
                     .collect(Collectors.joining(System.lineSeparator()))));
     topLevelClass.addMethod(getJdbcTypes);
+
+    return true;
+  }
+
+  @Override
+  public boolean clientGenerated(Interface interfaze, IntrospectedTable introspectedTable) {
+    // add method - selectAll()
+    interfaze.addImportedType(new FullyQualifiedJavaType("java.util.List"));
+    var selectAll = new Method("selectAll");
+    selectAll.setDefault(false);
+    selectAll.setAbstract(true);
+    selectAll.addAnnotation(
+        "@Select(\"SELECT * FROM %s\")"
+            .formatted(introspectedTable.getTableConfiguration().getTableName()));
+    selectAll.setReturnType(
+        new FullyQualifiedJavaType("List<%s>".formatted(introspectedTable.getBaseRecordType())));
+    var insideResultAnnotation =
+        introspectedTable.getAllColumns().stream()
+            .map(
+                v -> {
+                  var columnName = v.getActualColumnName();
+                  var javaProperty = v.getJavaProperty();
+                  var jdbcType = v.getJdbcTypeName();
+                  return "@Result(column=\"%s\", property=\"%s\", jdbcType=JdbcType.%s)"
+                      .formatted(columnName, javaProperty, jdbcType);
+                })
+            .collect(Collectors.joining(","));
+    selectAll.addAnnotation("@Results({%s})".formatted(insideResultAnnotation));
+    interfaze.addMethod(selectAll);
 
     return true;
   }

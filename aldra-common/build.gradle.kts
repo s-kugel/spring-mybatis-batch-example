@@ -11,6 +11,9 @@ dependencies {
     testImplementation(libs.lombok)
     testAnnotationProcessor(libs.lombok)
 
+    implementation(libs.spring.boot.starter)
+    implementation(libs.mybatis.spring)
+    implementation(project(":aldra-database"))
     implementation(project(":aldra-enums"))
 
     testImplementation(libs.junit.jupiter.api)

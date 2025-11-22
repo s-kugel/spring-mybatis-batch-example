@@ -12,4 +12,5 @@ public record BatchContext(
     LocalDate previousBasisDate,
     LocalDate nextBasisDate,
     LocalDate startOfMonth,
-    LocalDate endOfMonth) {}
+    LocalDate endOfMonth,
+    Boolean businessDateFlag) {}

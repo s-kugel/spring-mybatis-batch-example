@@ -13,4 +13,4 @@ app:
 logging:
   level:
     root: warn
-    com.s_kugel.aldra.batch: info
+    com.s_kugel.aldra: info

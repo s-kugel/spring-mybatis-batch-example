@@ -15,13 +15,12 @@
 
     <update id="updateBatchEndLog">
         UPDATE batch_log
-        SET status = #{status},
-            basis_date = (SELECT basis_date FROM application_date LIMIT 1),
-            exit_datetime = CURRENT_TIMESTAMP,
-            exit_message = #{exitMessage},
-            updated_at = CURRENT_TIMESTAMP,
-            updated_by = #{updatedBy},
-            version = version + 1
-        WHERE id = #{id}
+        SET status = #{row.status},
+            exit_datetime = #{row.exitDatetime},
+            exit_message = #{row.exitMessage},
+            updated_at = #{row.updatedAt},
+            updated_by = #{row.updatedBy},
+            version = #{row.version}
+        WHERE id = #{row.id}
     </update>
 </mapper>

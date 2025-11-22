@@ -1,6 +1,5 @@
 package com.s_kugel.aldra.batch.runner;
 
-import com.s_kugel.aldra.batch.model.BatchContext;
 import com.s_kugel.aldra.batch.model.BatchResult;
 import com.s_kugel.aldra.batch.task.BatchTask;
 import lombok.extern.slf4j.Slf4j;
@@ -40,22 +39,16 @@ public abstract class AbstractBatchRunner implements ApplicationRunner, ExitCode
     sw.start();
     log.info("[{}][{}]{}を開始します。", getBatchId(), getBatchName(), getBatchNameJP());
 
-    var context =
-        BatchContext.builder()
-            .batchId(getBatchId())
-            .batchName(getBatchName())
-            .batchNameJP(getBatchNameJP())
-            .build();
     var task = getTask();
-
     try {
+      var context = task.initializeContext(getBatchId(), getBatchName(), getBatchNameJP());
       var hasRunningSameTask = task.hasRunningSameTask(context);
       if (hasRunningSameTask) {
-        this.batchResult = BatchResult.warn("同一バッチが起動中のため処理を中断します");
+        this.batchResult = BatchResult.warn("同一バッチが起動中のため処理を中断します。");
       } else {
-        var batchLogId = task.startLog(context);
+        var startLog = task.startLog(context);
         var batchResult = task.execute(context);
-        task.endLog(batchLogId, batchResult, context);
+        task.endLog(context, startLog, batchResult);
         this.batchResult = batchResult;
       }
     } catch (Exception e) {

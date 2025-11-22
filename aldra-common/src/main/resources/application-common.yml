@@ -1,0 +1,3 @@
+app:
+  clock:
+    mode: ${CLOCK_MODE:Fixed}

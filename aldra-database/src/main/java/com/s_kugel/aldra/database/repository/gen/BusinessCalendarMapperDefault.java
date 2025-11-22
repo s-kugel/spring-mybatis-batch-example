@@ -2,6 +2,7 @@ package com.s_kugel.aldra.database.repository.gen;
 
 import com.s_kugel.aldra.database.entity.gen.BusinessCalendar;
 import java.time.LocalDate;
+import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -118,4 +119,23 @@ public interface BusinessCalendarMapperDefault {
     "where basis_date = #{basisDate,jdbcType=DATE}"
   })
   int updateByPrimaryKey(BusinessCalendar row);
+
+  @Select("SELECT * FROM business_calendar")
+  @Results({
+    @Result(column = "basis_date", property = "basisDate", jdbcType = JdbcType.DATE),
+    @Result(
+        column = "previous_basis_date",
+        property = "previousBasisDate",
+        jdbcType = JdbcType.DATE),
+    @Result(column = "next_basis_date", property = "nextBasisDate", jdbcType = JdbcType.DATE),
+    @Result(column = "start_of_month", property = "startOfMonth", jdbcType = JdbcType.DATE),
+    @Result(column = "end_of_month", property = "endOfMonth", jdbcType = JdbcType.DATE),
+    @Result(column = "business_date_flag", property = "businessDateFlag", jdbcType = JdbcType.BIT),
+    @Result(column = "created_at", property = "createdAt", jdbcType = JdbcType.TIMESTAMP),
+    @Result(column = "created_by", property = "createdBy", jdbcType = JdbcType.VARCHAR),
+    @Result(column = "updated_at", property = "updatedAt", jdbcType = JdbcType.TIMESTAMP),
+    @Result(column = "updated_by", property = "updatedBy", jdbcType = JdbcType.VARCHAR),
+    @Result(column = "version", property = "version", jdbcType = JdbcType.INTEGER)
+  })
+  List<BusinessCalendar> selectAll();
 }
