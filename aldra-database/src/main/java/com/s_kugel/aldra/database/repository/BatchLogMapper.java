@@ -9,7 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BatchLogMapper extends BatchLogMapperDefault, BulkInsertMapper {
 
-  Integer countRunningTask(@Param("batchId") String batchId, @Param("status") BatchStatus status);
+  Integer countByBatchIdAndStatus(
+      @Param("batchId") String batchId, @Param("status") BatchStatus status);
 
   Integer updateBatchEndLog(@Param("row") BatchLog row);
 }

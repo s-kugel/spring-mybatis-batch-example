@@ -52,7 +52,7 @@ public abstract class BusinessDateTask implements BatchTask {
 
   @Override
   public boolean hasRunningSameTask(BatchContext context) {
-    var count = batchLogMapper.countRunningTask(context.batchId(), BatchStatus.RUNNING);
+    var count = batchLogMapper.countByBatchIdAndStatus(context.batchId(), BatchStatus.RUNNING);
     return count > 0;
   }
 
